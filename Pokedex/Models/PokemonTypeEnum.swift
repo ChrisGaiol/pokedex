@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PokemonType {
+enum PokemonTypeEnum {
     
     case normal
     case fire
