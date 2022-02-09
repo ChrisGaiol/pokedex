@@ -1,57 +1,45 @@
 //
-//  ViewController.swift
+//  PokemonListViewController.swift
 //  Pokedex
 //
-//  Created by Christian Gaiola on 25/11/2021.
+//  Created by SAUVAGE Maxime on 26/01/2022.
 //
 
+import Foundation
 import UIKit
 
 class PokemonListViewController: UIViewController {
-    // MARK: - Outlets
-    @IBOutlet private var collectionView: UICollectionView!
+    //MARK:- Outlets
+    @IBOutlet weak var tableView: UITableView!
+    //MARK:- Attributes
+    private var viewModel: PokemonListViewModelProtocol!
     
-    // MARK: - Properties
-    private var viewModel: PokemonListViewModelProtocol = PokemonListViewModel()
-
-    // MARK: - Lifecycle
+    //MARK:- Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        observeViewModel()
+        viewModel = PokemonListViewModel()
         
-        viewModel.getPokemonTypes()
-    }
-    
-    
-    private func observeViewModel() {
-        DispatchQueue.main.async {
-            self.viewModel.pokemonTypeReloaded = {
-                self.collectionView.reloadData()
-            }
+        viewModel.pokemonListReloaded = { [weak self] in
+            self?.tableView.reloadData()
         }
-        
     }
     
+    //MARK:- Methods
+    private func getPokemonList() {
+        viewModel.getPokemonList()
+    }
 }
 
-extension PokemonListViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.pokemonTypes.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? PokemonListCell else {
-            return UICollectionViewCell()
+extension PokemonListViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? PokemonInfoCell else {
+            return UITableViewCell()
         }
-        let data = viewModel.pokemonTypes[indexPath.item]
-        cell.setup(withTitle: data.name)
+        cell.setTitle(title: "")
         return cell
     }
-}
-
-extension PokemonListViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
     }
 }

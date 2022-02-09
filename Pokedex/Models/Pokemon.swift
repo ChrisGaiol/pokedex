@@ -19,3 +19,12 @@ struct Pokemon {
         self.types = types
     }
 }
+
+struct PokemonDetail {
+    
+    let name: String
+    let id: Int
+    let order: Int
+    let imageUrl: URL
+
+}
