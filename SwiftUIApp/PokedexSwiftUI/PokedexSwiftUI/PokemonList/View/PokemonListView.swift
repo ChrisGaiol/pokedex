@@ -42,9 +42,6 @@ struct PokemonListView: View {
                 }.onAppear {
                     viewModel.getPokemons()
                 }.navigationTitle("Pokemons")
-                
-                
-                
             }
             
             /*Button("button") {
