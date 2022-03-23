@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 struct Pokemon {
     
@@ -18,13 +19,22 @@ struct Pokemon {
         self.order = order
         self.types = types
     }
+    
+    func convert() -> PokemonRealm {
+        let realm = PokemonRealm()
+        realm.name = name
+        realm.order = order
+        realm.types = List<String>()
+        types.forEach {
+            realm.types.append($0.rawValue)
+        }
+        return realm
+    }
 }
 
 struct PokemonDetail {
-    
     let name: String
     let id: Int
     let order: Int
     let imageUrl: URL
-
 }
